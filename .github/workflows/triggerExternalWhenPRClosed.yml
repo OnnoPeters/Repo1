@@ -1,0 +1,25 @@
+name: Trigger Task Completion
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  trigger_external_workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm install @octokit/core
+
+      - name: Trigger Task Completion Workflow
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}"
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          npm install @octokit/core
+          node scripts/triggerExternal.js
